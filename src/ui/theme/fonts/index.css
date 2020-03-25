@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./Montserrat/Medium/Montserrat-Medium.woff2') format('woff2'),
+    url('./Montserrat/Medium/Montserrat-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./Montserrat/SemiBold/Montserrat-SemiBold.woff2') format('woff2'),
+    url('./Montserrat/SemiBold/Montserrat-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  src: url('./Montserrat/Bold/Montserrat-Bold.woff2') format('woff2'),
+    url('./Montserrat/Bold/Montserrat-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Montserrat Alternates';
+  src: url('./MontserratAlternates/MontserratAlternates-SemiBold.woff2')
+      format('woff2'),
+    url('./MontserratAlternates/MontserratAlternates-SemiBold.ttf')
+      format('ttf'),
+    url('./MontserratAlternates/MontserratAlternates-SemiBold.woff')
+      format('woff');
+  font-weight: 600;
+  font-style: normal;
+}

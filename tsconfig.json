@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "lib": ["ES2015", "DOM"],
+    "allowJs": true,
+    "jsx": "react",
+    "sourceMap": true,
+    "strict": true,
+    "baseUrl": "src",
+    "paths": {
+      "core/*": ["core/*"],
+      "screens/*": ["screens/*"],
+      "components/*": ["components/*"],
+      "ui/*": ["ui/*"]
+    },
+    "noImplicitAny": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["./src/*"],
+  "files": ["custom.d.ts"],
+  "exclude": ["node_modules", "public"]
+}
