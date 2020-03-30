@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import { Login, Posts } from 'screens';
+import { Login, Posts, EditPost, NewPost } from 'screens';
 import { PrivateRoute } from 'components';
 
 import routeNames from './routeNames';
@@ -13,6 +13,10 @@ const Router: React.FC = () => (
     <Route exact path={routeNames.main} component={Login} />
 
     <PrivateRoute exact path={routeNames.posts} component={Posts} />
+
+    <PrivateRoute exact path={routeNames.editPost} component={EditPost} />
+
+    <PrivateRoute exact path={routeNames.newPost} component={NewPost} />
 
     <Route path={routeNames.notFound} component={notFound} />
   </Switch>

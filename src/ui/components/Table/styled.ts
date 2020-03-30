@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   overflow-y: scroll;
-  margin-bottom: 80px;
+  margin: 20px 0 80px 0;
 
   table {
     border-spacing: 0;

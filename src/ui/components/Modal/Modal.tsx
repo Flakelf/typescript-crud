@@ -8,29 +8,35 @@ interface IModalProps {
   opened: boolean;
   children: React.ReactNode;
   onClose: () => void;
+  isLoading: boolean;
 }
 
-const Modal: React.FC<IModalProps> = ({ children, opened, onClose }): JSX.Element | null => {
+const Modal: React.FC<IModalProps> = ({
+  children,
+  opened,
+  onClose,
+  isLoading,
+}): JSX.Element | null => {
   const overlayRef = useRef(null);
 
   const onOverlayClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
-      if (e.target === overlayRef.current) {
+      if (e.target === overlayRef.current && !isLoading) {
         e.preventDefault();
 
         onClose();
       }
     },
-    [onClose],
+    [onClose, isLoading],
   );
 
   const onKeyUp = useCallback(
     (e: KeyboardEvent) => {
-      if (overlayRef.current && e.key === 'Escape') {
+      if (overlayRef.current && e.key === 'Escape' && !isLoading) {
         onClose();
       }
     },
-    [onClose],
+    [onClose, isLoading],
   );
 
   useEffect(() => {

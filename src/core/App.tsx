@@ -2,7 +2,7 @@ import React from 'react';
 import { ConnectedRouter } from 'connected-react-router';
 import { Provider } from 'react-redux';
 
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 
 import { store, history } from 'modules';
 import { Layout } from 'ui/components';
@@ -15,7 +15,7 @@ const App: React.FC = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <GlobalStyles />
-      <ToastContainer />
+      <ToastContainer position={toast.POSITION.TOP_CENTER} />
       <CustomThemeProvider>
         <Layout>
           <Router />
@@ -25,4 +25,4 @@ const App: React.FC = () => (
   </Provider>
 );
 
-export default App;
+export { App };

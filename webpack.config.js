@@ -12,9 +12,9 @@ const config = {
   entry: path.resolve(__dirname, 'src/index.tsx'),
   output: {
     path: path.resolve(__dirname, 'dist'),
-    // filename: isDev ? '[name].js' : '[name].[hash].js',
-    filename: 'main.js',
-    // publicPath: '/',
+    filename: 'bundle-[hash].js',
+    chunkFilename: '[name].[hash].js',
+    publicPath: '/',
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -28,7 +28,7 @@ const config = {
 
   devtool: isDev ? 'source-map' : '',
   devServer: {
-    hot: !isDev,
+    hot: isDev,
     contentBase: './dist',
     historyApiFallback: true,
   },

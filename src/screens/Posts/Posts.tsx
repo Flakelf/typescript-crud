@@ -8,7 +8,7 @@ import { fetchPosts } from 'modules/posts/actions';
 import { getPosts } from 'modules/posts/selectors';
 import { IPost } from 'modules/posts/types';
 
-import { Table, IconWrapper, Modal } from 'ui/components';
+import { Table, IconWrapper, Modal, Button } from 'ui/components';
 import { Delete, Pencil } from 'ui/icons';
 
 import { DeleteConfirmation } from './components';
@@ -18,6 +18,7 @@ import { Wrapper, Title, ActionsCell } from './styled';
 const Posts: React.FC = () => {
   const dispatch = useDispatch();
   const posts = useSelector(getPosts);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [deleting, setDeleting] = useState<IPost | null>(null);
   const [isModalOpened, setIsModalOpened] = useState(false);
   const { push } = useHistory();
@@ -42,7 +43,7 @@ const Posts: React.FC = () => {
               <IconWrapper onClick={(): void => handleDeleteClick(original)}>
                 <Delete />
               </IconWrapper>
-              <IconWrapper onClick={(): void => push(`posts/edit/${original.id}`)}>
+              <IconWrapper onClick={(): void => push(`/posts/edit/${original.id}`)}>
                 <Pencil />
               </IconWrapper>
             </ActionsCell>
@@ -55,8 +56,10 @@ const Posts: React.FC = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchPosts());
-  }, [dispatch]);
+    if (posts.length === 0) {
+      dispatch(fetchPosts());
+    }
+  }, [dispatch, posts.length]);
 
   return (
     <React.Fragment>
@@ -64,14 +67,24 @@ const Posts: React.FC = () => {
         {posts.length !== 0 ? (
           <React.Fragment>
             <Title>Table page</Title>
+            <Button onClick={(): void => push('/posts/new')}>New post</Button>
             <Table data={posts} columns={columns} />
           </React.Fragment>
         ) : (
           <Loader width={200} height={200} type='Oval' color='black' />
         )}
       </Wrapper>
-      <Modal opened={isModalOpened} onClose={(): void => setIsModalOpened(false)}>
-        <DeleteConfirmation post={deleting} onClose={(): void => setIsModalOpened(false)} />
+      <Modal
+        opened={isModalOpened}
+        onClose={(): void => setIsModalOpened(false)}
+        isLoading={isLoading}
+      >
+        <DeleteConfirmation
+          post={deleting}
+          onClose={(): void => setIsModalOpened(false)}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
       </Modal>
     </React.Fragment>
   );

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { default as _Loader } from 'react-loader-spinner';
 
 export const Wrapper = styled.div`
   width: 600px;
@@ -40,5 +41,12 @@ export const Footer = styled.div`
 
   div:last-child {
     padding: 0 0 0 14px;
+  }
+`;
+
+export const Loader = styled(_Loader)`
+  svg {
+    margin: 30px auto;
+    width: 100%;
   }
 `;

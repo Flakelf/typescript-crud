@@ -5,6 +5,9 @@ import {
   DELETE_POST_REQUEST,
   DELETE_POST_SUCCESS,
   DELETE_POST_FAILURE,
+  CREATE_POST_REQUEST,
+  CREATE_POST_SUCCESS,
+  CREATE_POST_FAILURE,
 } from './constants';
 
 export interface IPost {
@@ -15,17 +18,26 @@ export interface IPost {
   userId: number;
 }
 
+export interface INewPost {
+  title: string;
+  body: string;
+  userId: number;
+}
+
 export interface IPostsState {
-  byId: {};
+  byId: {
+    [id: number]: IPost;
+  };
   ids: number[];
   isFetching: boolean;
+  users: IUser[];
 }
 
 export interface IUser {
   id: number;
   name: string;
-  email: string;
-  address: {
+  email?: string;
+  address?: {
     street: string;
     suite: string;
     city: string;
@@ -35,9 +47,9 @@ export interface IUser {
       lng: string;
     };
   };
-  phone: string;
-  website: string;
-  company: {
+  phone?: string;
+  website?: string;
+  company?: {
     name: string;
     catchPhrase: string;
     bs: string;
@@ -50,7 +62,10 @@ export interface PostsRequestAction {
 
 export interface PostRequestSuccessAction {
   type: typeof FETCH_POSTS_SUCCESS;
-  payload: IPost[];
+  payload: {
+    posts: IPost[];
+    users: IUser[];
+  };
 }
 
 export interface PostRequestFailureAction {
@@ -71,11 +86,34 @@ export interface DeletePostRequestAction {
 
 export interface DeletePostSuccessAction {
   type: typeof DELETE_POST_SUCCESS;
+  payload: {
+    id: number;
+  };
   meta: any;
 }
 
 export interface DeletePostFailureAction {
   type: typeof DELETE_POST_FAILURE;
+}
+
+// Create post action types
+
+export interface CreatePostRequestAction {
+  type: typeof CREATE_POST_REQUEST;
+  payload: INewPost;
+  meta: {
+    thunk: boolean;
+  };
+}
+
+export interface CreatePostSuccessAction {
+  type: typeof CREATE_POST_SUCCESS;
+  payload: INewPost;
+  meta: any;
+}
+
+export interface CreatePostFailureAction {
+  type: typeof CREATE_POST_FAILURE;
 }
 
 export type DeletePostRequestActionTypes =
@@ -87,3 +125,13 @@ export type PostRequestActionTypes =
   | PostsRequestAction
   | PostRequestSuccessAction
   | PostRequestFailureAction;
+
+export type CreatePostRequestActionTypes =
+  | CreatePostRequestAction
+  | CreatePostSuccessAction
+  | CreatePostFailureAction;
+
+export type PostsActionTypes =
+  | DeletePostRequestActionTypes
+  | PostRequestActionTypes
+  | CreatePostRequestActionTypes;

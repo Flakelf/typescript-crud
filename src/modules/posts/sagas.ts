@@ -8,9 +8,13 @@ import {
   fetchPostsFailure,
   deletePostSuccess,
   deletePostFailure,
+  createPostSuccess,
+  createPostFailure,
 } from './actions';
-import { FETCH_POSTS_REQUEST, DELETE_POST_REQUEST } from './constants';
-import { IPost, IUser, DeletePostRequestAction } from './types';
+
+import { FETCH_POSTS_REQUEST, DELETE_POST_REQUEST, CREATE_POST_REQUEST } from './constants';
+
+import { IPost, IUser, DeletePostRequestAction, CreatePostRequestAction } from './types';
 
 export function* fetchPosts(): SagaIterator {
   try {
@@ -19,12 +23,17 @@ export function* fetchPosts(): SagaIterator {
       call(API, 'users'),
     ]);
 
-    const data = postsData.map((post: IPost) => ({
+    const users = usersData.map((user: IUser) => ({
+      id: user.id,
+      name: user.name,
+    }));
+
+    const posts = postsData.map((post: IPost) => ({
       ...post,
       author: usersData.find((user: IUser) => user.id === post.userId).name,
     }));
 
-    yield put(fetchPostsSuccess(data));
+    yield put(fetchPostsSuccess(posts, users));
   } catch (e) {
     yield put(fetchPostsFailure());
 
@@ -34,12 +43,21 @@ export function* fetchPosts(): SagaIterator {
 
 export function* deletePost(action: DeletePostRequestAction): SagaIterator {
   try {
-    console.log(action);
-
     yield call(API.delete, `posts/${action.payload.id}`);
-    yield put(deletePostSuccess(action.meta));
+    yield put(deletePostSuccess({ id: action.payload.id }, action.meta));
   } catch (e) {
     yield put(deletePostFailure());
+  }
+}
+
+export function* createPost(action: CreatePostRequestAction): SagaIterator {
+  try {
+    yield call(API.post, 'posts', {
+      body: action.payload,
+    });
+    yield put(createPostSuccess(action.payload, action.meta));
+  } catch (e) {
+    yield put(createPostFailure());
   }
 }
 
@@ -47,5 +65,6 @@ export function* watchPostsSaga(): SagaIterator {
   yield all([
     takeEvery(FETCH_POSTS_REQUEST, fetchPosts),
     takeEvery(DELETE_POST_REQUEST, deletePost),
+    takeEvery(CREATE_POST_REQUEST, createPost),
   ]);
 }

@@ -1,17 +1,17 @@
 import React from 'react';
-import { Route, useHistory, RouteProps, RouteComponentProps } from 'react-router-dom';
+import { Route, useHistory, RouteProps } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { getToken } from 'modules/login/selectors';
 
 interface IPrivateRouteProps extends RouteProps {
-  component: React.ComponentType<RouteComponentProps<any>>;
+  component: any;
 }
 
-const PrivateRoute = ({
+const PrivateRoute: React.FC<IPrivateRouteProps> = ({
   component: Component,
   ...props
-}: IPrivateRouteProps): React.ReactElement<RouteProps> | null => {
+}): React.ReactElement<RouteProps> | null => {
   const token = useSelector(getToken);
   const history = useHistory();
 
