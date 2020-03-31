@@ -1,52 +1,65 @@
-import React, { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
+import Loader from 'react-loader-spinner';
+import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 
-import { createPost } from 'modules/posts/actions';
+import { fetchPosts, createPost } from 'modules/posts/actions';
+import { getAuthors } from 'modules/posts/selectors';
 
 import { PostForm } from 'components';
-import { Button } from 'ui/components';
 
 import { NewPostSchema } from './validate';
-
 import { Wrapper, Title } from './styled';
 
 interface IFormValues {
   title: string;
-  author: string;
   body: string;
+  userId: number;
 }
 
-const NewPost: React.FC<RouteComponentProps> = ({ history: { push } }) => {
+const NewPost: React.FC = () => {
   const dispatch = useDispatch();
+  const authors = useSelector(getAuthors);
+  const { push } = useHistory();
 
   const handleSubmit = useCallback(
     async (values: IFormValues): Promise<void> => {
-      console.log(values);
-
-      const data = {
-        title: values.title,
-        body: values.body,
-        userId: 1, // Always will be 1
-      };
-
-      const request = await dispatch(createPost(data));
-
-      console.log(request);
+      try {
+        await dispatch(createPost(values));
+      } catch (e) {
+        toast.error('Some rror occurred');
+      } finally {
+        toast.success('Post created succusfully');
+        push('/posts');
+      }
     },
-    [dispatch],
+    [dispatch, push],
   );
+
+  useEffect(() => {
+    if (authors.length === 0) {
+      dispatch(fetchPosts());
+    }
+  }, [authors, dispatch]);
 
   return (
     <Wrapper>
-      <Title>Create post</Title>
-      <Formik
-        initialValues={{ title: '', body: '', author: '' }}
-        onSubmit={handleSubmit}
-        component={PostForm}
-        validationSchema={NewPostSchema}
-      />
+      {authors.length === 0 ? (
+        <Loader width={240} height={240} type='Oval' color='black' />
+      ) : (
+        <React.Fragment>
+          <Title>Create post</Title>
+          <Formik
+            initialValues={{ title: '', body: '', userId: 1 }}
+            onSubmit={handleSubmit}
+            validationSchema={NewPostSchema}
+          >
+            {(props): React.ReactNode => <PostForm {...props} authors={authors} />}
+          </Formik>
+        </React.Fragment>
+      )}
     </Wrapper>
   );
 };

@@ -8,11 +8,14 @@ import {
   CREATE_POST_REQUEST,
   CREATE_POST_SUCCESS,
   CREATE_POST_FAILURE,
+  EDIT_POST_REQUEST,
+  EDIT_POST_SUCCESS,
+  EDIT_POST_FAILURE,
 } from './constants';
 
 export interface IPost {
   id: number;
-  author: string;
+  author?: string;
   title: string;
   body: string;
   userId: number;
@@ -22,6 +25,7 @@ export interface INewPost {
   title: string;
   body: string;
   userId: number;
+  id?: string | number;
 }
 
 export interface IPostsState {
@@ -56,6 +60,10 @@ export interface IUser {
   };
 }
 
+interface IRequestMeta {
+  thunk: boolean;
+}
+
 export interface PostsRequestAction {
   type: typeof FETCH_POSTS_REQUEST;
 }
@@ -79,9 +87,7 @@ export interface DeletePostRequestAction {
   payload: {
     id: number;
   };
-  meta: {
-    thunk: boolean;
-  };
+  meta: IRequestMeta;
 }
 
 export interface DeletePostSuccessAction {
@@ -101,9 +107,7 @@ export interface DeletePostFailureAction {
 export interface CreatePostRequestAction {
   type: typeof CREATE_POST_REQUEST;
   payload: INewPost;
-  meta: {
-    thunk: boolean;
-  };
+  meta: IRequestMeta;
 }
 
 export interface CreatePostSuccessAction {
@@ -114,6 +118,24 @@ export interface CreatePostSuccessAction {
 
 export interface CreatePostFailureAction {
   type: typeof CREATE_POST_FAILURE;
+}
+
+// Edit post action types
+
+export interface EditPostRequestAction {
+  type: typeof EDIT_POST_REQUEST;
+  payload: INewPost;
+  meta: IRequestMeta;
+}
+
+export interface EditPostSuccessAction {
+  type: typeof EDIT_POST_SUCCESS;
+  payload: INewPost;
+  meta: any;
+}
+
+export interface EditPostFailureAction {
+  type: typeof EDIT_POST_FAILURE;
 }
 
 export type DeletePostRequestActionTypes =
@@ -131,7 +153,13 @@ export type CreatePostRequestActionTypes =
   | CreatePostSuccessAction
   | CreatePostFailureAction;
 
+export type EditPostRequestActionTypes =
+  | EditPostRequestAction
+  | EditPostSuccessAction
+  | EditPostFailureAction;
+
 export type PostsActionTypes =
   | DeletePostRequestActionTypes
   | PostRequestActionTypes
-  | CreatePostRequestActionTypes;
+  | CreatePostRequestActionTypes
+  | EditPostRequestActionTypes;

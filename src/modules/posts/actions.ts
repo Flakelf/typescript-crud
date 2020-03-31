@@ -5,6 +5,7 @@ import {
   PostRequestActionTypes,
   DeletePostRequestActionTypes,
   CreatePostRequestActionTypes,
+  EditPostRequestActionTypes,
 } from './types';
 
 import {
@@ -17,6 +18,9 @@ import {
   CREATE_POST_REQUEST,
   CREATE_POST_SUCCESS,
   CREATE_POST_FAILURE,
+  EDIT_POST_REQUEST,
+  EDIT_POST_SUCCESS,
+  EDIT_POST_FAILURE,
 } from './constants';
 
 export const fetchPosts = (): PostRequestActionTypes => ({
@@ -70,4 +74,22 @@ export const createPostSuccess = (payload: INewPost, meta: any): CreatePostReque
 
 export const createPostFailure = (): CreatePostRequestActionTypes => ({
   type: CREATE_POST_FAILURE,
+});
+
+// Edit post action creators
+
+export const editPost = (editedPost: INewPost): EditPostRequestActionTypes => ({
+  type: EDIT_POST_REQUEST,
+  payload: editedPost,
+  meta: { thunk: true },
+});
+
+export const editPostSuccess = (payload: INewPost, meta: any): EditPostRequestActionTypes => ({
+  type: EDIT_POST_SUCCESS,
+  payload,
+  meta,
+});
+
+export const editPostFailure = (): EditPostRequestActionTypes => ({
+  type: EDIT_POST_FAILURE,
 });

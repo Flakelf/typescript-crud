@@ -3,11 +3,10 @@ import styled from 'styled-components';
 import { Form as _Form } from 'formik';
 
 export const Form = styled(_Form)`
-  margin: 0 auto;
+  margin: 26px 0 auto;
   width: 600px;
-  height: 400px;
+  height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
   background: white;
   opacity: 0.9;

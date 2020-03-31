@@ -1,11 +1,12 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { Formik } from 'formik';
+import { Formik, validateYupSchema } from 'formik';
 import Loader from 'react-loader-spinner';
+import { toast } from 'react-toastify';
 
-import { getPostById } from 'modules/posts/selectors';
-import { fetchPosts } from 'modules/posts/actions';
+import { getPostById, getAuthors } from 'modules/posts/selectors';
+import { fetchPosts, editPost } from 'modules/posts/actions';
 
 import { PostForm } from 'components';
 
@@ -15,27 +16,43 @@ import { Wrapper, Title } from './styled';
 
 interface IFormValues {
   title: string;
-  author: string;
   body: string;
+  userId: number;
 }
-
-const EditPost: React.FC<RouteComponentProps<{ id: string }>> = props => {
-  console.log(props);
-
-  const {
-    match: {
-      params: { id },
-    },
-  } = props;
-
+const EditPost: React.FC<RouteComponentProps<{ id: string }>> = ({
+  history: { push },
+  match: {
+    params: { id },
+  },
+}) => {
   const dispatch = useDispatch();
   const post = useSelector(getPostById(+id));
+  const authors = useSelector(getAuthors);
 
-  console.log(post);
+  const initialValues = useMemo(
+    (): IFormValues => ({
+      title: post?.title,
+      body: post?.body,
+      userId: post?.userId,
+    }),
+    [post],
+  );
 
-  const handleSubmit = useCallback((values: IFormValues): void => {
-    console.log(values);
-  }, []);
+  const handleSubmit = useCallback(
+    async (values: IFormValues): Promise<void> => {
+      try {
+        console.log({ ...values, id });
+
+        await dispatch(editPost({ ...values, id }));
+      } catch (e) {
+        toast.error('Some error occurred');
+      } finally {
+        toast.success('Post updated successfully');
+        push('/posts');
+      }
+    },
+    [dispatch, id, push],
+  );
 
   useEffect(() => {
     if (!post) {
@@ -49,11 +66,12 @@ const EditPost: React.FC<RouteComponentProps<{ id: string }>> = props => {
         <React.Fragment>
           <Title>Edit post</Title>
           <Formik
-            initialValues={post}
+            initialValues={initialValues}
             onSubmit={handleSubmit}
-            component={PostForm}
             validationSchema={EditPostSchema}
-          />
+          >
+            {(props): React.ReactNode => <PostForm {...props} authors={authors} />}
+          </Formik>
         </React.Fragment>
       ) : (
         <Loader width={240} height={240} type='Oval' color='black' />

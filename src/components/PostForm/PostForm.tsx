@@ -2,22 +2,29 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Field, FormikProps } from 'formik';
 
-import { Input, Button } from 'ui/components';
+import { Input, Button, Select } from 'ui/components';
+
+import { IUser } from 'modules/posts/types';
 
 import { Form } from './styled';
 
 interface IPostFormValues {
   title: string;
   body: string;
-  author: string;
+  userId: number;
 }
 
-const PostForm: React.FC<FormikProps<IPostFormValues>> = props => {
-  console.log(props);
-
+const PostForm: React.FC<FormikProps<IPostFormValues> & { authors: IUser[] }> = ({
+  errors,
+  isSubmitting,
+  authors,
+}) => {
   const { push } = useHistory();
 
-  const { errors, isSubmitting } = props;
+  const options = authors?.map(author => ({
+    value: author.id,
+    label: author.name,
+  }));
 
   return (
     <React.Fragment>
@@ -42,14 +49,8 @@ const PostForm: React.FC<FormikProps<IPostFormValues>> = props => {
           error={errors.body}
           disabled={isSubmitting}
         />
-        <Field
-          name='author'
-          component={Input}
-          required
-          label='Author'
-          error={errors.author}
-          disabled={isSubmitting}
-        />
+
+        <Field name='userId' component={Select} options={options} disabled={isSubmitting} />
 
         <Button type='submit' disabled={isSubmitting}>
           Save post

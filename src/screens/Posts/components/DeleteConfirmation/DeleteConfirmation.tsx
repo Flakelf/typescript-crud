@@ -32,14 +32,14 @@ const DeleteConfirmation: React.FC<IDeleteConfirmationProps> = ({
     setIsLoading(true);
     try {
       if (post?.id) {
-        await dispatch(deletePost(post.id));
+        await dispatch(deletePost(+post.id));
       }
     } catch (e) {
       toast.error('Some error occurred');
       setIsLoading(false);
     } finally {
       setIsLoading(false);
-      toast.success('Post succusfully deleted !');
+      toast.success('Post succusfully deleted!');
       onClose();
     }
   }, [dispatch, onClose, post, setIsLoading]);

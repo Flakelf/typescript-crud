@@ -6,3 +6,4 @@ export { Table } from './Table/Table';
 export { IconWrapper } from './IconWrapper/IconWrapper';
 export { Modal } from './Modal/Modal';
 export { Portal } from './Portal/Portal';
+export { CustomSelect as Select } from './Select/Select';
