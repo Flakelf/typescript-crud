@@ -6,8 +6,6 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 
-// const filename = ext => ();
-
 const config = {
   entry: path.resolve(__dirname, 'src/index.tsx'),
   output: {
