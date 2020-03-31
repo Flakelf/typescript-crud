@@ -15,7 +15,7 @@ const PrivateRoute: React.FC<IPrivateRouteProps> = ({
   const token = useSelector(getToken);
   const history = useHistory();
 
-  if (token) {
+  if (!token) {
     history.push('/');
     return null;
   }
