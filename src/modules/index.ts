@@ -1,6 +1,4 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
-import { connectRouter, routerMiddleware } from 'connected-react-router';
-import { createBrowserHistory } from 'history';
 import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
 import { composeWithDevTools } from 'redux-devtools-extension';
@@ -21,16 +19,12 @@ export interface IAppState {
   [POSTS]: IPostsState;
 }
 
-const history = createBrowserHistory();
 const sagaMiddleware = createSagaMiddleware();
-const middlewareEnhancer = composeWithDevTools(
-  applyMiddleware(routerMiddleware(history), thunkMiddleware, sagaMiddleware),
-);
+const middlewareEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware, sagaMiddleware));
 
 const reducers = {
   [AUTH]: authReducer,
   [POSTS]: postReducer,
-  router: connectRouter(history),
 };
 
 const store = createStore(combineReducers(reducers), compose(middlewareEnhancer));
@@ -39,4 +33,4 @@ sagaMiddleware.run(function*() {
   yield all([watchAuthSaga(), watchPostsSaga()]);
 });
 
-export { store, history };
+export { store };

@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import { toast } from 'react-toastify';
+import { useHistory } from 'react-router-dom';
 
 import { authRequest } from 'modules/login/actions';
 
@@ -17,19 +18,20 @@ interface IFormValues {
 const Login: React.FC = () => {
   const dispatch = useDispatch();
   const [isFetching, setIsFetching] = useState<boolean>(false);
+  const { push } = useHistory();
 
   const handleSubmit = useCallback(
     async (values: IFormValues): Promise<void> => {
       setIsFetching(true);
       try {
         await dispatch(authRequest(values));
+        push('/posts');
       } catch (e) {
         toast.error('Login/password is invalid');
-      } finally {
         setIsFetching(false);
       }
     },
-    [dispatch],
+    [dispatch, push],
   );
 
   return (

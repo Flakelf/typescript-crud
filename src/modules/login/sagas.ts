@@ -1,6 +1,5 @@
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
-import { push } from 'connected-react-router';
 
 import { apiCallLoginRequest } from 'core/requests';
 
@@ -10,11 +9,9 @@ import { AUTH_REQUEST } from './constants';
 
 export function* loginUser(action: AuthRequestAction): SagaIterator {
   try {
-    console.log(action);
     const token = yield call(apiCallLoginRequest, action.payload);
 
     yield put(authSuccess(token, action.meta));
-    yield put(push('/posts'));
   } catch (e) {
     yield put(
       authFailure({
