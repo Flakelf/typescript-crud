@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
-import { Formik, validateYupSchema } from 'formik';
+import { Formik } from 'formik';
 import Loader from 'react-loader-spinner';
 import { toast } from 'react-toastify';
 
@@ -41,8 +41,6 @@ const EditPost: React.FC<RouteComponentProps<{ id: string }>> = ({
   const handleSubmit = useCallback(
     async (values: IFormValues): Promise<void> => {
       try {
-        console.log({ ...values, id });
-
         await dispatch(editPost({ ...values, id }));
       } catch (e) {
         toast.error('Some error occurred');

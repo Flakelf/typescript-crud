@@ -28,10 +28,10 @@ const NewPost: React.FC = () => {
     async (values: IFormValues): Promise<void> => {
       try {
         await dispatch(createPost(values));
-      } catch (e) {
-        toast.error('Some rror occurred');
-      } finally {
         toast.success('Post created succusfully');
+      } catch (e) {
+        toast.error('Some error occurred');
+      } finally {
         push('/posts');
       }
     },

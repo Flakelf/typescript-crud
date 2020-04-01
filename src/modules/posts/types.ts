@@ -1,3 +1,5 @@
+import { IRequestThunkMeta, IThunkMeta, IThunkFailure } from 'core/commonTypes';
+
 import {
   FETCH_POSTS_REQUEST,
   FETCH_POSTS_SUCCESS,
@@ -60,10 +62,6 @@ export interface IUser {
   };
 }
 
-interface IRequestMeta {
-  thunk: boolean;
-}
-
 export interface PostsRequestAction {
   type: typeof FETCH_POSTS_REQUEST;
 }
@@ -87,7 +85,7 @@ export interface DeletePostRequestAction {
   payload: {
     id: number;
   };
-  meta: IRequestMeta;
+  meta: any;
 }
 
 export interface DeletePostSuccessAction {
@@ -100,6 +98,8 @@ export interface DeletePostSuccessAction {
 
 export interface DeletePostFailureAction {
   type: typeof DELETE_POST_FAILURE;
+  error: boolean;
+  meta: any;
 }
 
 // Create post action types
@@ -107,7 +107,7 @@ export interface DeletePostFailureAction {
 export interface CreatePostRequestAction {
   type: typeof CREATE_POST_REQUEST;
   payload: INewPost;
-  meta: IRequestMeta;
+  meta: any;
 }
 
 export interface CreatePostSuccessAction {
@@ -118,6 +118,8 @@ export interface CreatePostSuccessAction {
 
 export interface CreatePostFailureAction {
   type: typeof CREATE_POST_FAILURE;
+  error: boolean;
+  meta: any;
 }
 
 // Edit post action types
@@ -125,7 +127,7 @@ export interface CreatePostFailureAction {
 export interface EditPostRequestAction {
   type: typeof EDIT_POST_REQUEST;
   payload: INewPost;
-  meta: IRequestMeta;
+  meta: any;
 }
 
 export interface EditPostSuccessAction {
@@ -136,6 +138,8 @@ export interface EditPostSuccessAction {
 
 export interface EditPostFailureAction {
   type: typeof EDIT_POST_FAILURE;
+  error: boolean;
+  meta: any;
 }
 
 export type DeletePostRequestActionTypes =

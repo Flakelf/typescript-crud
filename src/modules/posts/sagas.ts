@@ -51,8 +51,6 @@ export function* fetchPosts(): SagaIterator {
     yield put(fetchPostsSuccess(posts, users));
   } catch (e) {
     yield put(fetchPostsFailure());
-
-    console.log(e);
   }
 }
 
@@ -61,7 +59,12 @@ export function* deletePost(action: DeletePostRequestAction): SagaIterator {
     yield call(API.delete, `posts/${action.payload.id}`);
     yield put(deletePostSuccess({ id: action.payload.id }, action.meta));
   } catch (e) {
-    yield put(deletePostFailure());
+    yield put(
+      deletePostFailure({
+        error: true,
+        meta: action.meta,
+      }),
+    );
   }
 }
 
@@ -72,7 +75,12 @@ export function* createPost(action: CreatePostRequestAction): SagaIterator {
     });
     yield put(createPostSuccess(action.payload, action.meta));
   } catch (e) {
-    yield put(createPostFailure());
+    yield put(
+      createPostFailure({
+        error: true,
+        meta: action.meta,
+      }),
+    );
   }
 }
 
@@ -84,7 +92,12 @@ export function* editPost(action: EditPostRequestAction): SagaIterator {
 
     yield put(editPostSuccess(action.payload, action.meta));
   } catch (e) {
-    yield put(editPostFailure());
+    yield put(
+      editPostFailure({
+        error: true,
+        meta: action.meta,
+      }),
+    );
   }
 }
 

@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
+import { toast } from 'react-toastify';
 
 import { authRequest } from 'modules/login/actions';
-import { getIsFetching } from 'modules/login/selectors';
 
 import { AuthForm } from 'components';
 
@@ -16,11 +16,18 @@ interface IFormValues {
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
-  const isFetching = useSelector(getIsFetching);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
 
   const handleSubmit = useCallback(
-    (values: IFormValues): void => {
-      dispatch(authRequest(values));
+    async (values: IFormValues): Promise<void> => {
+      setIsFetching(true);
+      try {
+        await dispatch(authRequest(values));
+      } catch (e) {
+        toast.error('Login/password is invalid');
+      } finally {
+        setIsFetching(false);
+      }
     },
     [dispatch],
   );

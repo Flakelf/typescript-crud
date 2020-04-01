@@ -29,7 +29,6 @@ const filterById = (arr: IPost[], id: number): IPost[] =>
   arr.filter((arrItem: IPost): boolean => arrItem.id !== id);
 
 export default (state = initialState, action: PostsActionTypes): IPostsState => {
-  console.log(action);
   switch (action.type) {
     case FETCH_POSTS_SUCCESS:
       return {
@@ -67,8 +66,7 @@ export default (state = initialState, action: PostsActionTypes): IPostsState => 
         ...state,
         byId: {
           ...state.byId,
-          // @ts-ignore
-          [action.payload.id]: {
+          [action.payload.id as string]: {
             ...action.payload,
             id: action.payload.id,
             author: state.users.find(user => user.id === +action.payload.userId)?.name,

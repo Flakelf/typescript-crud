@@ -10,14 +10,18 @@ import { AUTH_REQUEST } from './constants';
 
 export function* loginUser(action: AuthRequestAction): SagaIterator {
   try {
+    console.log(action);
     const token = yield call(apiCallLoginRequest, action.payload);
 
-    yield put(authSuccess(token));
+    yield put(authSuccess(token, action.meta));
     yield put(push('/posts'));
   } catch (e) {
-    yield put(authFailure());
-
-    console.log(e);
+    yield put(
+      authFailure({
+        error: true,
+        meta: action.meta,
+      }),
+    );
   }
 }
 

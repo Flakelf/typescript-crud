@@ -1,3 +1,5 @@
+import { IThunkFailure, IThunkMeta, IRequestThunkMeta } from 'core/commonTypes';
+
 import {
   IPost,
   IUser,
@@ -47,15 +49,20 @@ export const deletePost = (id: number): DeletePostRequestActionTypes => ({
 
 export const deletePostSuccess = (
   payload: { id: number },
-  meta: any,
+  meta: IThunkMeta,
 ): DeletePostRequestActionTypes => ({
   type: DELETE_POST_SUCCESS,
   payload,
   meta,
 });
 
-export const deletePostFailure = (): DeletePostRequestActionTypes => ({
+export const deletePostFailure = ({
+  error,
+  meta,
+}: IThunkFailure): DeletePostRequestActionTypes => ({
   type: DELETE_POST_FAILURE,
+  error,
+  meta,
 });
 
 // Create post action creators
@@ -66,14 +73,22 @@ export const createPost = (newPost: INewPost): CreatePostRequestActionTypes => (
   meta: { thunk: true },
 });
 
-export const createPostSuccess = (payload: INewPost, meta: any): CreatePostRequestActionTypes => ({
+export const createPostSuccess = (
+  payload: INewPost,
+  meta: IThunkMeta,
+): CreatePostRequestActionTypes => ({
   type: CREATE_POST_SUCCESS,
   payload,
   meta,
 });
 
-export const createPostFailure = (): CreatePostRequestActionTypes => ({
+export const createPostFailure = ({
+  error,
+  meta,
+}: IThunkFailure): CreatePostRequestActionTypes => ({
   type: CREATE_POST_FAILURE,
+  error,
+  meta,
 });
 
 // Edit post action creators
@@ -84,12 +99,17 @@ export const editPost = (editedPost: INewPost): EditPostRequestActionTypes => ({
   meta: { thunk: true },
 });
 
-export const editPostSuccess = (payload: INewPost, meta: any): EditPostRequestActionTypes => ({
+export const editPostSuccess = (
+  payload: INewPost,
+  meta: IRequestThunkMeta,
+): EditPostRequestActionTypes => ({
   type: EDIT_POST_SUCCESS,
   payload,
   meta,
 });
 
-export const editPostFailure = (): EditPostRequestActionTypes => ({
+export const editPostFailure = ({ error, meta }: IThunkFailure): EditPostRequestActionTypes => ({
   type: EDIT_POST_FAILURE,
+  error,
+  meta,
 });
