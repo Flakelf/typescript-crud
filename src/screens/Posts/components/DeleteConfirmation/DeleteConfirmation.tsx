@@ -38,6 +38,7 @@ const DeleteConfirmation: React.FC<IDeleteConfirmationProps> = ({
     } catch (e) {
       toast.error('Some error occurred');
     } finally {
+      setIsLoading(false);
       onClose();
     }
   }, [dispatch, onClose, post, setIsLoading]);

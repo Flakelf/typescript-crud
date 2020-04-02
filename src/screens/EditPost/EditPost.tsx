@@ -42,11 +42,10 @@ const EditPost: React.FC<RouteComponentProps<{ id: string }>> = ({
     async (values: IFormValues): Promise<void> => {
       try {
         await dispatch(editPost({ ...values, id }));
-      } catch (e) {
-        toast.error('Some error occurred');
-      } finally {
         toast.success('Post updated successfully');
         push('/posts');
+      } catch (e) {
+        toast.error('Some error occurred');
       }
     },
     [dispatch, id, push],

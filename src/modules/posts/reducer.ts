@@ -64,9 +64,11 @@ export default (state = initialState, action: PostsActionTypes): IPostsState => 
     case EDIT_POST_SUCCESS:
       return {
         ...state,
+        // @ts-ignore
         byId: {
           ...state.byId,
-          [action.payload.id as string]: {
+          // @ts-ignore
+          [+action.payload.id as number]: {
             ...action.payload,
             id: action.payload.id,
             author: state.users.find(user => user.id === +action.payload.userId)?.name,
